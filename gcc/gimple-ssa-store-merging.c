@@ -1328,8 +1328,9 @@ lhs_valid_for_store_merging_p (tree lhs)
 static bool
 rhs_valid_for_store_merging_p (tree rhs)
 {
-  return native_encode_expr (rhs, NULL,
-			     GET_MODE_SIZE (TYPE_MODE (TREE_TYPE (rhs)))) != 0;
+  unsigned HOST_WIDE_INT size;
+  return (GET_MODE_SIZE (TYPE_MODE (TREE_TYPE (rhs))).is_constant (&size)
+	  && native_encode_expr (rhs, NULL, size) != 0);
 }
 
 /* Entry point for the pass.  Go over each basic block recording chains of
